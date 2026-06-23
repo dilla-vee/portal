@@ -59,31 +59,33 @@ function getAvatarSvg(avatarId) {
   
   const c = colors[avatarId] || colors["male-1"];
   
+  let svg = "";
   if (avatarId.startsWith("male")) {
-    return `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
-      <rect width="100" height="100" rx="16" fill="${encodeURIComponent(c.bg)}"/>
-      <circle cx="50" cy="40" r="20" fill="${encodeURIComponent(c.skin)}"/>
-      <path d="M50 18 C38 18, 32 25, 32 32 C35 32, 38 28, 50 28 C62 28, 65 32, 68 32 C68 25, 62 18, 50 18 Z" fill="${encodeURIComponent(c.hair)}"/>
-      <path d="M50 48 C42 48, 30 50, 30 52 L30 52 C30 52, 32 60, 32 60 L68 60 C68 60, 70 52, 70 52 L70 52 C70 50, 58 48, 50 48 Z" fill="${encodeURIComponent(c.skin)}"/>
-      <path d="M25 75 C25 65, 35 60, 50 60 C65 60, 75 65, 75 75 L75 90 C75 90, 25 90, 25 90 Z" fill="${encodeURIComponent(c.shirt)}"/>
-      <rect x="44" y="58" width="12" height="10" fill="${encodeURIComponent(c.skin)}"/>
-      <circle cx="44" cy="38" r="2.5" fill="%23222"/>
-      <circle cx="56" cy="38" r="2.5" fill="%23222"/>
-      <path d="M46 48 Q50 51 54 48" stroke="%23222" stroke-width="1.5" fill="none"/>
+    svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+      <rect width="100" height="100" rx="16" fill="${c.bg}"/>
+      <circle cx="50" cy="40" r="20" fill="${c.skin}"/>
+      <path d="M50 18 C38 18, 32 25, 32 32 C35 32, 38 28, 50 28 C62 28, 65 32, 68 32 C68 25, 62 18, 50 18 Z" fill="${c.hair}"/>
+      <path d="M50 48 C42 48, 30 50, 30 52 L30 52 C30 52, 32 60, 32 60 L68 60 C68 60, 70 52, 70 52 L70 52 C70 50, 58 48, 50 48 Z" fill="${c.skin}"/>
+      <path d="M25 75 C25 65, 35 60, 50 60 C65 60, 75 65, 75 75 L75 90 C75 90, 25 90, 25 90 Z" fill="${c.shirt}"/>
+      <rect x="44" y="58" width="12" height="10" fill="${c.skin}"/>
+      <circle cx="44" cy="38" r="2.5" fill="#222"/>
+      <circle cx="56" cy="38" r="2.5" fill="#222"/>
+      <path d="M46 48 Q50 51 54 48" stroke="#222" stroke-width="1.5" fill="none"/>
     </svg>`;
   } else {
-    return `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
-      <rect width="100" height="100" rx="16" fill="${encodeURIComponent(c.bg)}"/>
-      <circle cx="50" cy="42" r="18" fill="${encodeURIComponent(c.skin)}"/>
-      <!-- Long Hair -->
-      <path d="M28 35 C28 20, 72 20, 72 35 C72 50, 68 70, 68 70 C68 70, 65 30, 50 30 C35 30, 32 70, 32 70 C32 70, 28 50, 28 35 Z" fill="${encodeURIComponent(c.hair)}"/>
-      <path d="M25 75 C25 65, 35 60, 50 60 C65 60, 75 65, 75 75 L75 90 C75 90, 25 90, 25 90 Z" fill="${encodeURIComponent(c.shirt)}"/>
-      <rect x="45" y="56" width="10" height="10" fill="${encodeURIComponent(c.skin)}"/>
-      <circle cx="44" cy="40" r="2" fill="%23222"/>
-      <circle cx="56" cy="40" r="2" fill="%23222"/>
-      <path d="M47 48 Q50 50 53 48" stroke="%23222" stroke-width="1.5" fill="none"/>
+    svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+      <rect width="100" height="100" rx="16" fill="${c.bg}"/>
+      <circle cx="50" cy="42" r="18" fill="${c.skin}"/>
+      <path d="M28 35 C28 20, 72 20, 72 35 C72 50, 68 70, 68 70 C68 70, 65 30, 50 30 C35 30, 32 70, 32 70 C32 70, 28 50, 28 35 Z" fill="${c.hair}"/>
+      <path d="M25 75 C25 65, 35 60, 50 60 C65 60, 75 65, 75 75 L75 90 C75 90, 25 90, 25 90 Z" fill="${c.shirt}"/>
+      <rect x="45" y="56" width="10" height="10" fill="${c.skin}"/>
+      <circle cx="44" cy="40" r="2" fill="#222"/>
+      <circle cx="56" cy="40" r="2" fill="#222"/>
+      <path d="M47 48 Q50 50 53 48" stroke="#222" stroke-width="1.5" fill="none"/>
     </svg>`;
   }
+  
+  return "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svg)));
 }
 
 // Initializing DB
