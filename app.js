@@ -139,19 +139,13 @@ function setLoginRole(role) {
   const usernameLabel = document.getElementById("login-username-label");
   const usernameInput = document.getElementById("username");
   const userIcon = document.getElementById("login-user-icon");
-  const demoBox = document.getElementById("demo-credentials-box");
-  const demoText = document.getElementById("demo-credentials-text");
   
   if (role === "student") {
     usernameLabel.textContent = "Student ID / Registration Number";
     usernameInput.placeholder = "e.g., BIT/2025/10492";
-    demoBox.style.display = "block";
-    demoText.innerHTML = "Student: Use Reg No: <code>BIT/2025/10492</code> and password: <code>student123</code>";
   } else {
     usernameLabel.textContent = "Admin Username";
     usernameInput.placeholder = "e.g., admin";
-    demoBox.style.display = "block";
-    demoText.innerHTML = "Admin: Use Username: <code>admin</code> and password: <code>admin123</code>";
   }
 }
 
