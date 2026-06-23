@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MKU Student & Admin Portal</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app">
+    <!-- ==========================================
+         1. LOGIN VIEW
+         ========================================== -->
+    <div id="login-view" class="view-container login-view active">
+      <div class="login-card-container">
+        <div class="login-brand">
+          <div class="brand-logo-container">MKU</div>
+          <h1>Mount Kenya University</h1>
+          <p>Student & Staff Portal</p>
+        </div>
+        <div class="login-card">
+          <div class="login-tabs">
+            <button class="login-tab-btn active" id="tab-student" onclick="setLoginRole('student')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2L20 2v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/><path d="M8 18h8"/></svg>
+              Student Portal
+            </button>
+            <button class="login-tab-btn" id="tab-admin" onclick="setLoginRole('admin')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              Admin Portal
+            </button>
+          </div>
+          <form class="login-form-body" id="login-form" onsubmit="handleLogin(event)">
+            <div class="form-group">
+              <label for="username" id="login-username-label">Student ID / Registration Number</label>
+              <div class="input-wrapper">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="login-user-icon"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                 <input type="text" id="username" class="form-input" placeholder="e.g., BIT/2025/10492" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <div class="input-wrapper">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <input type="password" id="password" class="form-input" placeholder="••••••••" required>
+              </div>
+            </div>
+            <div class="login-options">
+              <label class="remember-me">
+                <input type="checkbox"> Remember Me
+              </label>
+              <a href="#" class="forgot-password" onclick="showToast('Password reset link sent to your registered email.', 'info')">Forgot Password?</a>
+            </div>
+            <button type="submit" class="btn-primary">
+              Sign In
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+            <div class="demo-hint" id="demo-credentials-box">
+              <h4>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                Demo Credentials
+              </h4>
+              <p id="demo-credentials-text">Student: Use Reg No: <code>BIT/2025/10492</code> and password: <code>student123</code></p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         2. STUDENT PORTAL DASHBOARD VIEW
+         ========================================== -->
+    <div id="student-view" class="view-container dashboard-layout">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-logo">MKU</div>
+          <div>
+            <div class="sidebar-brand-name">MKU Student</div>
+            <div class="sidebar-brand-sub">Portal Hub</div>
+          </div>
+        </div>
+        <div class="sidebar-user">
+          <div class="sidebar-avatar-wrapper">
+            <img src="" alt="Student Avatar" class="sidebar-avatar" id="student-avatar-img">
+          </div>
+          <div class="sidebar-user-details">
+            <div class="sidebar-username" id="student-name-sidebar">John Doe</div>
+            <span class="sidebar-userrole" id="student-reg-sidebar">BIT/2023/84920</span>
+          </div>
+        </div>
+        <ul class="sidebar-menu">
+          <li>
+            <a class="menu-item-link active" onclick="switchSection('student-home')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+              Home Profile
+            </a>
+          </li>
+          <li>
+            <a class="menu-item-link" onclick="switchSection('student-units')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
+              Registered Units
+            </a>
+          </li>
+          <li>
+            <a class="menu-item-link" onclick="switchSection('student-fees')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              Fees & Payments
+            </a>
+          </li>
+          <li>
+            <a class="menu-item-link" onclick="switchSection('student-transcript')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+              Academic Transcript
+            </a>
+          </li>
+          <li>
+            <a class="menu-item-link" href="https://virtualvarsity.mku.ac.ke" target="_blank">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              MKU E-Learning VLMS
+            </a>
+          </li>
+        </ul>
+        <div class="sidebar-footer">
+          <button class="logout-btn" onclick="logout()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Sign Out
+          </button>
+        </div>
+      </aside>
+
+      <!-- Sidebar Mobile Overlay -->
+      <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleMobileSidebar()"></div>
+
+      <!-- Main Panel -->
+      <main class="main-panel">
+        <header class="top-bar">
+          <button class="menu-toggle-btn" onclick="toggleMobileSidebar()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+          <div class="top-bar-title" id="page-title">Home Profile</div>
+          <div class="top-bar-actions">
+            <div class="notification-badge-container" onclick="showToast('No new notifications.', 'info')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+              <span class="notification-badge">2</span>
+            </div>
+            <div class="header-portal-indicator">
+              Student Active
+            </div>
+          </div>
+        </header>
+
+        <div class="dashboard-content">
+          <!-- 2a. Student Home / Profile Section -->
+          <section id="student-home-section" class="dashboard-section active">
+            <div class="student-profile-hero">
+              <div class="profile-hero-avatar-wrapper">
+                <img src="" alt="Student Photo" class="profile-hero-avatar" id="student-hero-img">
+                <div class="avatar-upload-overlay" onclick="triggerStudentPhotoUpload()">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                  <span>Update Photo</span>
+                </div>
+                <input type="file" id="student-photo-file-input" style="display: none;" accept="image/*" onchange="handleStudentPhotoUpload(event)">
+              </div>
+              <div class="profile-hero-details">
+                <div class="profile-hero-name" id="student-full-name">John Doe</div>
+                <div class="profile-hero-course" id="student-course">Bachelor of Science in Information Technology</div>
+                <div class="profile-meta-grid">
+                  <div class="profile-meta-item">
+                    <span class="profile-meta-label">Reg. Number</span>
+                    <span class="profile-meta-val" id="student-reg-no">BIT/2023/84920</span>
+                  </div>
+                  <div class="profile-meta-item">
+                    <span class="profile-meta-label">Year of Study</span>
+                    <span class="profile-meta-val" id="student-year">Year 3, Semester 2</span>
+                  </div>
+                  <div class="profile-meta-item">
+                    <span class="profile-meta-label">Department</span>
+                    <span class="profile-meta-val" id="student-dept">Computing & Informatics</span>
+                  </div>
+                  <div class="profile-meta-item">
+                    <span class="profile-meta-label">Status</span>
+                    <span class="profile-meta-val"><span class="badge badge-success">ACTIVE</span></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid-cols-3">
+              <div class="card stat-card">
+                <div class="stat-card-body">
+                  <div>
+                    <span class="stat-label">Registered Units</span>
+                    <div class="stat-val" id="stat-registered-units">6 Units</div>
+                  </div>
+                  <div class="stat-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5v-15z"/></svg>
+                  </div>
+                </div>
+              </div>
+              <div class="card stat-card accent">
+                <div class="stat-card-body">
+                  <div>
+                    <span class="stat-label">Fee Balance</span>
+                    <div class="stat-val" id="stat-fee-balance">KES 14,500</div>
+                  </div>
+                  <div class="stat-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                  </div>
+                </div>
+              </div>
+              <div class="card stat-card success">
+                <div class="stat-card-body">
+                  <div>
+                    <span class="stat-label">Cumulative GPA</span>
+                    <div class="stat-val" id="stat-cumulative-gpa">3.65 / 4.0</div>
+                  </div>
+                  <div class="stat-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid-cols-2">
+              <div class="card">
+                <div class="card-title-bar">
+                  <h3>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    Student Credentials Detail
+                  </h3>
+                </div>
+                <table class="portal-table">
+                  <tr>
+                    <td><strong>Full Name</strong></td>
+                    <td id="td-full-name">John Doe</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Registration Number</strong></td>
+                    <td id="td-reg-no">BIT/2023/84920</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Campus</strong></td>
+                    <td>Thika Main Campus</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Mode of Study</strong></td>
+                    <td>Regular (Day)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Email Address</strong></td>
+                    <td id="td-email">john.doe@student.mku.ac.ke</td>
+                  </tr>
+                  <tr>
+                    <td><strong>National ID/Passport</strong></td>
+                    <td id="td-national-id">37829103</td>
+                  </tr>
+                </table>
+              </div>
+
+              <div class="card">
+                <div class="card-title-bar">
+                  <h3>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    Academic Documents & Credentials
+                  </h3>
+                </div>
+                <p style="font-size: 0.85rem; color: var(--text-medium); margin-bottom: 1rem;">
+                  Upload KCSE results slips, transcripts, or ID papers. These credentials will sync immediately to the Administrator Portal.
+                </p>
+                <div class="documents-list" id="student-documents-list" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                  <!-- Injected by JavaScript -->
+                </div>
+                
+                <input type="file" id="doc-upload-kcseSlip" style="display: none;" accept="image/*,.pdf" onchange="handleDocUpload(event, 'kcseSlip')">
+                <input type="file" id="doc-upload-transcript" style="display: none;" accept="image/*,.pdf" onchange="handleDocUpload(event, 'transcript')">
+                <input type="file" id="doc-upload-nationalId" style="display: none;" accept="image/*,.pdf" onchange="handleDocUpload(event, 'nationalId')">
+              </div>
+            </div>
+
+            <!-- Current Semester Calendar (Full Width below) -->
+            <div class="card" style="margin-top: 1.5rem;">
+              <div class="card-title-bar">
+                <h3>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  Current Semester Calendar
+                </h3>
+              </div>
+              <table class="portal-table">
+                <tr>
+                  <td><strong>Semester Begins</strong></td>
+                  <td>May 4th, 2026</td>
+                </tr>
+                <tr>
+                  <td><strong>Unit Registration Deadline</strong></td>
+                  <td>June 30th, 2026</td>
+                </tr>
+                <tr>
+                  <td><strong>Mid Semester Exams</strong></td>
+                  <td>June 22nd - June 26th, 2026</td>
+                </tr>
+                <tr>
+                  <td><strong>Fee Payment Deadline</strong></td>
+                  <td>July 10th, 2026</td>
+                </tr>
+                <tr>
+                  <td><strong>End of Semester Exams</strong></td>
+                  <td>August 17th - August 28th, 2026</td>
+                </tr>
+              </table>
+            </div>
+          </section>
+
+          <!-- 2b. Student Units Section -->
+          <section id="student-units-section" class="dashboard-section">
+            <div class="card">
+              <div class="card-title-bar">
+                <h3>Registered Units - Semester Info</h3>
+                <button class="btn-accent" onclick="showToast('Your official examination card is ready for download.', 'success')">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  Print Exam Card
+                </button>
+              </div>
+              <div class="table-wrapper">
+                <table class="portal-table" id="registered-units-table">
+                  <thead>
+                    <tr>
+                      <th>Unit Code</th>
+                      <th>Unit Title</th>
+                      <th>Lecturer</th>
+                      <th>Credit Hours</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Injected by JavaScript -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Optional Unit Registration Simulator -->
+            <div class="card">
+              <div class="card-title-bar">
+                <h3>Add Elective/Unit Registration</h3>
+              </div>
+              <p style="margin-bottom: 1rem; color: var(--text-medium); font-size: 0.9rem;">You can register for additional recommended units for this semester below.</p>
+              <div class="table-wrapper">
+                <table class="portal-table" id="available-units-table">
+                  <thead>
+                    <tr>
+                      <th>Unit Code</th>
+                      <th>Unit Title</th>
+                      <th>Credit Hours</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Injected by JavaScript -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- 2c. Student Fees Section -->
+          <section id="student-fees-section" class="dashboard-section">
+            <div class="fee-summary-container">
+              <!-- Fee Financial Card -->
+              <div class="card">
+                <div class="card-title-bar">
+                  <h3>Fee Statement Summary</h3>
+                </div>
+                <div class="grid-cols-3" style="margin-bottom: 1.5rem;">
+                  <div class="card stat-card" style="padding: 1rem;">
+                    <span class="stat-label" style="font-size: 0.75rem;">Total Billed</span>
+                    <div class="stat-val" style="font-size: 1.5rem;" id="fee-total-billed">KES 68,000</div>
+                  </div>
+                  <div class="card stat-card success" style="padding: 1rem;">
+                    <span class="stat-label" style="font-size: 0.75rem;">Total Paid</span>
+                    <div class="stat-val" style="font-size: 1.5rem;" id="fee-total-paid">KES 53,500</div>
+                  </div>
+                  <div class="card stat-card accent" style="padding: 1rem;">
+                    <span class="stat-label" style="font-size: 0.75rem;">Total Outstanding</span>
+                    <div class="stat-val" style="font-size: 1.5rem;" id="fee-total-outstanding">KES 14,500</div>
+                  </div>
+                </div>
+
+                <div class="card-title-bar" style="border-bottom: none; margin-bottom: 0.5rem;">
+                  <h4 style="font-size: 0.95rem; text-transform: uppercase; color: var(--text-medium);">Payment Transaction History</h4>
+                </div>
+                <div class="table-wrapper">
+                  <table class="portal-table" id="fee-transactions-table">
+                    <thead>
+                      <tr>
+                        <th>Receipt No</th>
+                        <th>Date Paid</th>
+                        <th>Reference Code</th>
+                        <th>Amount Paid</th>
+                        <th>Payment Mode</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- Injected by JavaScript -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Payment Form & Circle Progress Side Card -->
+              <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <div class="card fee-progress-card">
+                  <span class="stat-label">Fee Clearance Status</span>
+                  <div class="circle-progress-wrapper">
+                    <svg class="circle-progress">
+                      <circle class="circle-progress-bg" cx="70" cy="70" r="60"/>
+                      <circle class="circle-progress-bar" cx="70" cy="70" r="60" id="fee-progress-bar-circle"/>
+                    </svg>
+                    <div class="circle-text">
+                      <span class="circle-pct" id="fee-progress-pct">78%</span>
+                      <span class="circle-lbl">Paid</span>
+                    </div>
+                  </div>
+                  <p style="font-size: 0.85rem; color: var(--text-medium); margin-top: 0.5rem;" id="fee-progress-summary">
+                    You require KES 14,500 to register for exams.
+                  </p>
+                </div>
+
+                <div class="card">
+                  <div class="card-title-bar">
+                    <h3>Simulate Pay via M-Pesa</h3>
+                  </div>
+                  <form class="pay-simulator-form" onsubmit="triggerMpesaPush(event)">
+                    <div class="form-group">
+                      <label for="mpesa-phone">M-Pesa Mobile Number</label>
+                      <input type="tel" id="mpesa-phone" class="form-input" style="padding-left: 1rem;" placeholder="e.g., 0712345678" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="mpesa-amount">Amount (KES)</label>
+                      <input type="number" id="mpesa-amount" class="form-input" style="padding-left: 1rem;" placeholder="e.g., 14500" required>
+                    </div>
+                    <button type="submit" class="pay-btn-mpesa">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                      Pay Fees via M-Pesa
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 2d. Student Academic Transcript Section -->
+          <section id="student-transcript-section" class="dashboard-section">
+            <div class="card transcript-card">
+              <div class="transcript-header-action">
+                <button class="btn-accent" onclick="window.print()">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                  Print / Save PDF Transcript
+                </button>
+              </div>
+
+              <!-- Official Looking Transcript -->
+              <div class="transcript-preview-area" id="transcript-document">
+                <div class="official-transcript-header">
+                  <div class="transcript-logo">MKU</div>
+                  <div class="official-university-name">Mount Kenya University</div>
+                  <div class="official-university-sub">Office of the Registrar (Academic Affairs)</div>
+                  <div class="official-document-title">Official Academic Transcript</div>
+                </div>
+
+                <div class="transcript-student-info">
+                  <div class="info-row">
+                    <span class="info-label">Student Name:</span>
+                    <span class="info-value" id="trans-student-name">John Doe</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-label">Reg. Number:</span>
+                    <span class="info-value" id="trans-reg-no">BIT/2023/84920</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-label">Programme:</span>
+                    <span class="info-value" id="trans-programme">Bachelor of Science in Information Technology</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-label">School:</span>
+                    <span class="info-value">School of Computing & Informatics</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-label">Admission Year:</span>
+                    <span class="info-value" id="trans-adm-year">2023</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-label">Status:</span>
+                    <span class="info-value">Course Completed</span>
+                  </div>
+                </div>
+
+                <div id="transcript-semesters-container">
+                  <!-- Dynamically populated by JS for each semester -->
+                </div>
+
+                <div class="transcript-summary-stats">
+                  <div>CUMULATIVE CREDIT HOURS: <span id="trans-total-credits">45</span></div>
+                  <div>CUMULATIVE GPA: <span id="trans-cumulative-gpa">3.65</span></div>
+                  <div>MEAN GRADE: <span id="trans-mean-grade">A-</span></div>
+                </div>
+
+                <div class="transcript-signature-area">
+                  <div class="signature-block">
+                    <div class="signature-line"></div>
+                    <div class="signature-label">Examinations Officer</div>
+                  </div>
+                  <div class="signature-block">
+                    <div class="signature-line"></div>
+                    <div class="signature-label">Registrar, Academic Affairs</div>
+                  </div>
+                  <div class="signature-block">
+                    <div class="signature-line" style="display: flex; align-items: center; justify-content: center; font-size: 0.75rem; color: var(--text-light);" id="trans-date-printed">2026-06-23</div>
+                    <div class="signature-label">Date of Issue</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <!-- ==========================================
+         3. ADMIN PORTAL DASHBOARD VIEW
+         ========================================== -->
+    <div id="admin-view" class="view-container dashboard-layout">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-logo">MKU</div>
+          <div>
+            <div class="sidebar-brand-name">MKU Admin</div>
+            <div class="sidebar-brand-sub">Management Portal</div>
+          </div>
+        </div>
+        <div class="sidebar-user">
+          <div class="sidebar-avatar-wrapper">
+            <div class="sidebar-avatar" style="display: flex; align-items: center; justify-content: center; font-size: 1.5rem; background: var(--accent-color); color: var(--primary-dark); font-weight: bold;">AD</div>
+          </div>
+          <div class="sidebar-user-details">
+            <div class="sidebar-username">System Admin</div>
+            <span class="sidebar-userrole">Super User</span>
+          </div>
+        </div>
+        <ul class="sidebar-menu">
+          <li>
+            <a class="menu-item-link active" onclick="switchAdminSection('admin-home')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              Student Directory
+            </a>
+          </li>
+        </ul>
+        <div class="sidebar-footer">
+          <button class="logout-btn" onclick="logout()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Sign Out
+          </button>
+        </div>
+      </aside>
+
+      <!-- Sidebar Mobile Overlay -->
+      <div class="sidebar-overlay" id="admin-sidebar-overlay" onclick="toggleMobileSidebarAdmin()"></div>
+
+      <!-- Main Panel -->
+      <main class="main-panel">
+        <header class="top-bar">
+          <button class="menu-toggle-btn" onclick="toggleMobileSidebarAdmin()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+          <div class="top-bar-title" id="admin-page-title">Student Directory</div>
+          <div class="top-bar-actions">
+            <div class="header-portal-indicator admin">
+              Administrator Access
+            </div>
+          </div>
+        </header>
+
+        <div class="dashboard-content">
+          <!-- 3a. Admin Home Section -->
+          <section id="admin-home-section" class="dashboard-section active">
+            <div class="admin-welcome-notice">
+              <div class="admin-welcome-text">
+                <h4>Welcome, Admin!</h4>
+                <p>Manage student academic results, transcripts, and fee status directly. Edits will sync immediately.</p>
+              </div>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="grid-cols-3">
+              <div class="card stat-card">
+                <div class="stat-card-body">
+                  <div>
+                    <span class="stat-label">Total Students</span>
+                    <div class="stat-val" id="admin-stat-total-students">0</div>
+                  </div>
+                  <div class="stat-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                  </div>
+                </div>
+              </div>
+              <div class="card stat-card accent">
+                <div class="stat-card-body">
+                  <div>
+                    <span class="stat-label">Average Portal GPA</span>
+                    <div class="stat-val" id="admin-stat-average-gpa">0.0</div>
+                  </div>
+                  <div class="stat-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>
+                  </div>
+                </div>
+              </div>
+              <div class="card stat-card danger">
+                <div class="stat-card-body">
+                  <div>
+                    <span class="stat-label">Unpaid Fees Total</span>
+                    <div class="stat-val" id="admin-stat-unpaid-fees">KES 0</div>
+                  </div>
+                  <div class="stat-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Student List Card -->
+            <div class="card">
+              <div class="card-title-bar admin-toolbar">
+                <h3>Registered Students Directory</h3>
+                <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+                  <div class="search-box-wrapper" style="margin-bottom: 0;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <input type="text" id="admin-search-input" class="search-input" placeholder="Search by Reg No or Name..." oninput="filterStudents()">
+                  </div>
+                  <button class="btn-accent" onclick="openStudentFormModal(null)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Add New Student
+                  </button>
+                </div>
+              </div>
+              <div class="table-wrapper">
+                <table class="portal-table" id="admin-students-table">
+                  <thead>
+                    <tr>
+                      <th>Photo</th>
+                      <th>Reg. Number</th>
+                      <th>Student Name</th>
+                      <th>Course</th>
+                      <th>GPA</th>
+                      <th>Fee Balance</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Injected by JavaScript -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <!-- ==========================================
+         4. DIALOGS & OVERLAYS (MODALS)
+         ========================================== -->
+    <!-- Edit Results/Transcript Modal -->
+    <div class="modal-overlay" id="edit-results-modal">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3 id="edit-results-modal-title">Edit Academic Results</h3>
+          <button class="modal-close-btn" onclick="closeEditModal()">×</button>
+        </div>
+        <div class="modal-body">
+          <p style="font-size: 0.9rem; color: var(--text-medium); margin-bottom: 1.5rem;">
+            Update marks for each unit. The letter grade, point-average, and cumulative GPA will be automatically computed upon saving.
+          </p>
+          <div class="results-edit-list" id="edit-results-form-list">
+            <!-- Dynamically populated by JS for student's units -->
+          </div>
+
+          <!-- Register Unit section inside the modal -->
+          <div style="border-top: 1.5px dashed var(--border-color); margin-top: 1.5rem; padding-top: 1.5rem;">
+            <h4 style="font-size: 0.95rem; margin-bottom: 0.75rem; color: var(--primary-dark); display: flex; align-items: center; gap: 0.35rem;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Register Unit for Student
+            </h4>
+            <div class="modal-grid-2" style="align-items: flex-end; gap: 0.5rem; margin-bottom: 0;">
+              <div class="form-group" style="margin-bottom: 0;">
+                <label for="admin-add-unit-select" style="font-size: 0.75rem;">Select Recommended Unit</label>
+                <select id="admin-add-unit-select" class="form-input" style="padding: 0.5rem; height: 38px;" onchange="toggleCustomUnitFields()">
+                  <!-- Dynamically populated by JS -->
+                </select>
+              </div>
+              <div class="form-group" style="margin-bottom: 0;">
+                <button type="button" class="btn-accent" style="height: 38px; justify-content: center; width: 100%;" onclick="adminRegisterUnitForStudent()">
+                  Register Unit
+                </button>
+              </div>
+            </div>
+            
+            <!-- Custom Unit Fields (hidden by default unless Custom is selected) -->
+            <div id="admin-custom-unit-fields" style="display: none; grid-template-columns: 1.5fr 2fr 1fr; gap: 0.5rem; margin-top: 0.75rem;">
+              <div class="form-group" style="margin-bottom: 0;">
+                <input type="text" id="admin-custom-unit-code" class="form-input" style="padding: 0.5rem;" placeholder="Unit Code (e.g., BIT 2201)">
+              </div>
+              <div class="form-group" style="margin-bottom: 0;">
+                <input type="text" id="admin-custom-unit-title" class="form-input" style="padding: 0.5rem;" placeholder="Unit Title">
+              </div>
+              <div class="form-group" style="margin-bottom: 0;">
+                <input type="number" id="admin-custom-unit-credits" class="form-input" style="padding: 0.5rem;" placeholder="Credits" value="3">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-secondary" onclick="closeEditModal()">Cancel</button>
+          <button class="btn-primary" style="width: auto;" onclick="saveStudentResults()">Save Changes</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add / Edit Student Credentials Modal -->
+    <div class="modal-overlay" id="student-form-modal">
+      <div class="modal-card" style="max-width: 600px; width: 90%;">
+        <div class="modal-header">
+          <h3 id="student-form-modal-title">Add New Student</h3>
+          <button class="modal-close-btn" onclick="closeStudentFormModal()">×</button>
+        </div>
+        
+        <!-- Modal Tabs Header -->
+        <div class="modal-tabs-header" style="display: flex; border-bottom: 1.5px solid var(--border-color); background: #f8fafc;">
+          <button type="button" class="modal-tab-btn active" id="admin-student-tab-profile" onclick="switchAdminStudentFormTab('profile')" style="flex: 1; background: none; border: none; padding: 0.85rem 1rem; font-weight: 600; font-size: 0.9rem; color: var(--primary-color); border-bottom: 3px solid var(--primary-color); cursor: pointer; transition: all var(--transition-fast);">Profile Details</button>
+          <button type="button" class="modal-tab-btn" id="admin-student-tab-docs" onclick="switchAdminStudentFormTab('docs')" style="flex: 1; background: none; border: none; padding: 0.85rem 1rem; font-weight: 600; font-size: 0.9rem; color: var(--text-medium); border-bottom: 3px solid transparent; cursor: pointer; transition: all var(--transition-fast);">Academic Documents</button>
+        </div>
+
+        <form id="student-credentials-form" onsubmit="saveStudentCredentials(event)">
+          <div class="modal-body" style="padding-top: 1rem; max-height: calc(85vh - 180px); overflow-y: auto;">
+            
+            <!-- Pane 1: Profile Info -->
+            <div id="admin-student-pane-profile" class="modal-tab-pane active">
+              <div class="modal-grid-2">
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label for="student-form-reg">Registration Number</label>
+                  <input type="text" id="student-form-reg" class="form-input" style="padding-left: 1rem;" placeholder="e.g., BIT/2026/89201" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label for="student-form-name">Full Name</label>
+                  <input type="text" id="student-form-name" class="form-input" style="padding-left: 1rem;" placeholder="e.g., Alice Wambui" required>
+                </div>
+              </div>
+              <div class="modal-grid-2">
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label for="student-form-course">Course Program</label>
+                  <input type="text" id="student-form-course" class="form-input" style="padding-left: 1rem;" placeholder="e.g., Bachelor of Commerce" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label for="student-form-dept">Department</label>
+                  <input type="text" id="student-form-dept" class="form-input" style="padding-left: 1rem;" placeholder="e.g., School of Business" required>
+                </div>
+              </div>
+              <div class="modal-grid-2">
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label for="student-form-year">Year of Study / Sem</label>
+                  <select id="student-form-year" class="form-input" style="padding-left: 1rem;" required>
+                    <option value="Year 1, Semester 1">Year 1, Semester 1</option>
+                    <option value="Year 1, Semester 2">Year 1, Semester 2</option>
+                    <option value="Year 2, Semester 1">Year 2, Semester 1</option>
+                    <option value="Year 2, Semester 2">Year 2, Semester 2</option>
+                    <option value="Year 3, Semester 1">Year 3, Semester 1</option>
+                    <option value="Year 3, Semester 2">Year 3, Semester 2</option>
+                    <option value="Year 4, Semester 1">Year 4, Semester 1</option>
+                    <option value="Year 4, Semester 2">Year 4, Semester 2</option>
+                  </select>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label for="student-form-admyear">Admission Year</label>
+                  <input type="number" id="student-form-admyear" class="form-input" style="padding-left: 1rem;" placeholder="e.g., 2026" required>
+                </div>
+              </div>
+              <div class="modal-grid-2">
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label for="student-form-email">Email Address</label>
+                  <input type="email" id="student-form-email" class="form-input" style="padding-left: 1rem;" placeholder="e.g., alice@student.mku.ac.ke" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label for="student-form-nationalid">National ID / Passport</label>
+                  <input type="text" id="student-form-nationalid" class="form-input" style="padding-left: 1rem;" placeholder="e.g., 38920192" required>
+                </div>
+              </div>
+              <div class="modal-grid-3">
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label for="student-form-billed">Total Billed Fees (KES)</label>
+                  <input type="number" id="student-form-billed" class="form-input" style="padding-left: 1rem;" placeholder="e.g., 65000" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label for="student-form-paid">Total Paid Fees (KES)</label>
+                  <input type="number" id="student-form-paid" class="form-input" style="padding-left: 1rem;" placeholder="e.g., 20000" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label for="student-form-avatar">Avatar Style</label>
+                  <select id="student-form-avatar" class="form-input" style="padding-left: 1rem;" required>
+                    <option value="male-1">Male Student (Blue/Yellow)</option>
+                    <option value="female-1">Female Student (Yellow/Orange)</option>
+                    <option value="male-2">Male Student 2 (Green/Amber)</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="modal-grid-2" style="margin-top: 1rem; align-items: center;">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                  <img id="admin-form-avatar-preview" src="" alt="Avatar Preview" style="width: 50px; height: 50px; border-radius: var(--radius-sm); border: 2px solid var(--accent-color); background: white; object-fit: cover;">
+                  <div class="form-group" style="margin-bottom: 0; flex: 1;">
+                    <label for="student-form-photo-upload">Upload Profile Photo (PNG/JPG)</label>
+                    <input type="file" id="student-form-photo-upload" class="form-input" style="padding: 0.35rem 0.5rem;" accept="image/*">
+                  </div>
+                </div>
+                <div class="form-group" style="margin-bottom: 0; display: flex; align-items: flex-end;">
+                  <span id="photo-upload-status" style="font-size: 0.85rem; color: var(--text-medium); font-weight: 500;">No photo uploaded (using default avatar)</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Pane 2: Academic Documents -->
+            <div id="admin-student-pane-docs" class="modal-tab-pane" style="display: none;">
+              <p style="font-size: 0.85rem; color: var(--text-medium); margin-bottom: 1.25rem;">
+                Manage official credentials uploaded by the student. Click on a file to view or replace it.
+              </p>
+              <div id="admin-student-documents-list" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <!-- Injected by JavaScript -->
+              </div>
+              
+              <input type="file" id="admin-doc-upload-kcseSlip" style="display: none;" accept="image/*,.pdf" onchange="handleAdminDocUpload(event, 'kcseSlip')">
+              <input type="file" id="admin-doc-upload-transcript" style="display: none;" accept="image/*,.pdf" onchange="handleAdminDocUpload(event, 'transcript')">
+              <input type="file" id="admin-doc-upload-nationalId" style="display: none;" accept="image/*,.pdf" onchange="handleAdminDocUpload(event, 'nationalId')">
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn-secondary" onclick="closeStudentFormModal()">Cancel</button>
+            <button type="submit" class="btn-primary" style="width: auto;">Save Student</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- M-Pesa push simulation screen -->
+    <div class="mpesa-simulation-overlay" id="mpesa-sim-overlay">
+      <div class="mpesa-phone-card">
+        <div class="mpesa-phone-header">
+          Lipa na M-PESA
+        </div>
+        <div class="mpesa-phone-body">
+          <div class="mpesa-prompt" id="mpesa-prompt-text">
+            Do you want to pay KES 14,500 to Mount Kenya University?<br>Enter M-Pesa PIN:
+          </div>
+          <div class="mpesa-pin-fields">
+            <div class="mpesa-pin-dot" id="dot-1"></div>
+            <div class="mpesa-pin-dot" id="dot-2"></div>
+            <div class="mpesa-pin-dot" id="dot-3"></div>
+            <div class="mpesa-pin-dot" id="dot-4"></div>
+          </div>
+          <div class="mpesa-phone-numpad">
+            <button class="mpesa-key" onclick="pressMpesaKey('1')">1</button>
+            <button class="mpesa-key" onclick="pressMpesaKey('2')">2</button>
+            <button class="mpesa-key" onclick="pressMpesaKey('3')">3</button>
+            <button class="mpesa-key" onclick="pressMpesaKey('4')">4</button>
+            <button class="mpesa-key" onclick="pressMpesaKey('5')">5</button>
+            <button class="mpesa-key" onclick="pressMpesaKey('6')">6</button>
+            <button class="mpesa-key" onclick="pressMpesaKey('7')">7</button>
+            <button class="mpesa-key" onclick="pressMpesaKey('8')">8</button>
+            <button class="mpesa-key" onclick="pressMpesaKey('9')">9</button>
+            <button class="mpesa-key" style="background: transparent; color: #ff3b30;" onclick="clearMpesaKey()">Clear</button>
+            <button class="mpesa-key" onclick="pressMpesaKey('0')">0</button>
+            <button class="mpesa-key" style="background: transparent;" disabled></button>
+          </div>
+        </div>
+        <div class="mpesa-phone-footer">
+          <button class="mpesa-phone-btn cancel" onclick="cancelMpesaTransaction()">Cancel</button>
+          <button class="mpesa-phone-btn ok" onclick="submitMpesaTransaction()">Send</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Document Preview Modal -->
+    <div class="modal-overlay" id="document-preview-modal" style="z-index: 2000;">
+      <div class="modal-card" style="max-width: 800px; width: 90%; height: 85vh; display: flex; flex-direction: column;">
+        <div class="modal-header">
+          <h3 id="document-preview-modal-title">Document Preview</h3>
+          <button class="modal-close-btn" onclick="closeDocumentPreviewModal()">×</button>
+        </div>
+        <div class="modal-body" style="flex: 1; display: flex; align-items: center; justify-content: center; background: #f8fafc; overflow: auto; padding: 1.5rem; position: relative;">
+          <div id="document-preview-content" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+            <!-- Injected preview content (img, iframe, or fallback card) -->
+          </div>
+        </div>
+        <div class="modal-footer" style="justify-content: flex-end; gap: 0.75rem;">
+          <a id="document-download-link" href="#" download class="btn-primary" style="width: auto; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; background: var(--success-color); border: none;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download Document
+          </a>
+          <button class="btn-secondary" onclick="closeDocumentPreviewModal()">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toast-container"></div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
